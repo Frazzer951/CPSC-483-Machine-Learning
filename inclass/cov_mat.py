@@ -17,7 +17,7 @@ cov_mat = np.cov(data)
 
 print(cov_mat)
 
-u, s, vh = np.linalg.svd(cov_mat, full_matrices=False)
+u, s, vh = np.linalg.svd(cov_mat)
 
 print(u)
 print(s)
