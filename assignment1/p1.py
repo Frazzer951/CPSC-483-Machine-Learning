@@ -29,19 +29,23 @@ RMSE Train : 0.11
 R^2 Train: 0.80
 
 Order 3:
-Training Took 0.066 seconds
+Training Took 0.062 seconds
 Coefficients:
 [[ 1.18e+00 -9.92e-03 -4.42e+03  7.96e-01 -3.96e-03  2.12e-04  1.49e+05 -2.39e-03  4.60e-06 -1.30e-06 -1.70e+06  2.20e-06]]
-Root Mean squared error: 10.16
-R^2: -1628.58
+RMSE Test : 10.16
+R^2 Test: -1628.58
+RMSE Train : 0.11
+R^2 Train: 0.82
 
 Order 4:
-Training Took 0.086 seconds
+Training Took 0.081 seconds
 Coefficients:
 [[ 1.62e+00  2.91e+00  5.54e+02  2.54e+01 -7.39e-03 -1.16e-01 -1.07e+04 -9.21e-02  1.52e-05  1.81e-03 -1.01e+03  1.47e-04
   -1.16e-08 -9.18e-06 -6.35e+01 -8.79e-08]]
-Root Mean squared error: 18851.68
-R^2: -5607047729.94
+RMSE Test : 18851.68
+R^2 Test: -5607047729.94
+RMSE Train : 0.11
+R^2 Train: 0.81
 """
 
 # Load the dataset
@@ -53,32 +57,20 @@ split_index = int(len(df) * percent)
 data_y = df.drop(columns=["T", "P", "TC", "SV"]).to_numpy()
 data_X = df.drop(columns="Idx").to_numpy()
 
-# print("data_X:", data_X)
 
-data_X = increase_order(mat=data_X, order=2)
+data_X = increase_order(mat=data_X, order=1)
 print("Order set")
 
-# print("data_X:", data_X)
-# print(type(data_X))
-# print("data_y:", data_y)
-# print(type(data_y))
 
 # Split the data into training/testing sets
 data_X_train = data_X[:split_index]
 data_X_test = data_X[split_index:]
-# print("Train:", data_X_train)
-# print(len(data_X_train))
-# print("Test:", data_X_test)
-# print(len(data_X_test))
 
 
 # Split the targets into training/testing sets
 data_y_train = data_y[:split_index]
 data_y_test = data_y[split_index:]
-# print("Train:", data_y_train)
-# print(len(data_y_test))
-# print("Test:", data_y_train)
-# print(len(data_y_test))
+
 
 # Create linear regression object
 regr = linear_model.LinearRegression()
