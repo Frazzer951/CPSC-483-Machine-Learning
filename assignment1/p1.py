@@ -48,6 +48,20 @@ RMSE Train : 0.11
 R^2 Train: 0.81
 """
 
+"""
+#1
+b)  The training and testing data was split 50/50
+c)  RMSE Train : 0.11
+    R^2 Train: 0.80
+    RMSE Test : 0.92
+    R^2 Test: -12.25
+    Took 0.023 seconds to train
+d)  4 terms in total, with a polynomial order of 1
+e)  When training with higher orders, while the training data kept a small error,
+    the testing data had a huge increase in error. This leads me to believe that
+    the model becomes over fit with any order greater than 1
+"""
+
 # Load the dataset
 df = pd.read_csv("Data1.csv")
 
