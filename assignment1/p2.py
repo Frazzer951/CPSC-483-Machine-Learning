@@ -10,6 +10,14 @@ np.set_printoptions(precision=2, linewidth=127)
 
 """
 Order 1:
+Training Took 113.70 seconds
+Final Weight [ 1.   -0.12  0.02  1.    0.21]
+Coefficients:
+[ 1.   -0.12  0.02  1.    0.21]
+RMSE Train : 1.12
+R^2 Train: -18.77
+RMSE Test : 0.94
+R^2 Test: -12.98
 
 Order 2:
 
@@ -25,46 +33,14 @@ b)
 c)
 d)
 e)
-f)s
+f)
 """
 
-"""
-20k
-Training Took 113.24 seconds
-Final Weight [ 1.66e-03 -1.33e-01  1.49e-02 -2.64e-05  2.23e-01]
-Coefficients:
-[ 1.66e-03 -1.33e-01  1.49e-02 -2.64e-05  2.23e-01]
-RMSE Train : 1.12
-R^2 Train: -18.87
-RMSE Test : 0.95
-R^2 Test: -13.37
-
-15k
-Training Took 81.53 seconds
-Final Weight [ 1.53e-03 -1.27e-01  1.67e-02 -2.45e-05  2.18e-01]
-Coefficients:
-[ 1.53e-03 -1.27e-01  1.67e-02 -2.45e-05  2.18e-01]
-RMSE Train : 1.13
-R^2 Train: -19.29
-RMSE Test : 0.94
-R^2 Test: -13.08
-
-10k
-Training Took 55.02 seconds
-Final Weight [ 1.34e-03 -1.11e-01  2.15e-02 -2.10e-05  2.06e-01]
-Coefficients:
-[ 1.34e-03 -1.11e-01  2.15e-02 -2.10e-05  2.06e-01]
-RMSE Train : 1.21
-R^2 Train: -22.24
-RMSE Test : 1.54
-R^2 Test: -36.54
-
-"""
 
 # variables
 order = 1
 alpha = 0.000001  # tuning parameter
-iters = 15_000
+iters = 20_000
 
 # Load the dataset
 df = pd.read_csv("Data1.csv")
@@ -109,8 +85,8 @@ for iteration in range(iters):
 
     if iteration % 1000 == 0:
         # Print out the cost and weights every 1000 iterations
-        cst = np.sum(loss**2) / (2 * n)
-        print(f"Iteration {iteration} | Cost {cst:.2f} | Weights: {w}")
+        cost = np.sum(loss**2) / (2 * n)
+        print(f"Iteration {iteration} | Cost {cost:.2f} | Weights: {w}")
 
     gradient = np.dot(data_X_trans, loss) / n
 
