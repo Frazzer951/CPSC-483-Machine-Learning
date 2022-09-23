@@ -5,47 +5,57 @@ import numpy as np
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error as mse, r2_score
 
-from utils import increase_order
+from utils import increase_order, normalize
 
 np.set_printoptions(precision=2, linewidth=127)
 
 """
 Order 1:
-Training Took 0.023 seconds
+Training Took 0.027 seconds
 Coefficients:
-[[ 4.32e-02 -1.02e-03 -6.78e+01 -5.49e-02]]
-RMSE Test : 0.41
-R^2 Test: -1.63
+[  0.    15.25  -0.31  -2.87 -25.58]
 RMSE Train : 0.12
 R^2 Train: 0.77
+RMSE Test : 0.41
+R^2 Test: -1.63
 
 Order 2:
-Training Took 0.041 seconds
+Training Took 0.048 seconds
 Coefficients:
-[[ 4.71e-02 -2.95e-03  2.63e+02 -2.12e-01  4.16e-06  1.89e-05 -5.72e+03  1.87e-04]]
-RMSE Test : 0.92
-R^2 Test: -12.25
+[  0.    16.64  -0.89  11.14 -98.53   0.52   1.7  -10.27  40.59]
 RMSE Train : 0.11
 R^2 Train: 0.80
+RMSE Test : 0.92
+R^2 Test: -12.25
 
 Order 3:
-Training Took 0.062 seconds
+Training Took 0.063 seconds
 Coefficients:
-[[ 1.18e+00 -9.92e-03 -4.42e+03  7.96e-01 -3.96e-03  2.12e-04  1.49e+05 -2.39e-03  4.60e-06 -1.30e-06 -1.70e+06  2.20e-06]]
-RMSE Test : 10.16
-R^2 Test: -1628.58
+[ 417.13   -2.97 -187.24  370.69 -493.77   19.1   267.8  -519.28  202.78  -35.01 -129.61  222.1 ]
 RMSE Train : 0.11
 R^2 Train: 0.82
+RMSE Test : 10.16
+R^2 Test: -1628.57
 
 Order 4:
-Training Took 0.081 seconds
+Training Took 0.084 seconds
 Coefficients:
-[[ 1.62e+00  2.91e+00  5.54e+02  2.54e+01 -7.39e-03 -1.16e-01 -1.07e+04 -9.21e-02  1.52e-05  1.81e-03 -1.01e+03  1.47e-04
-  -1.16e-08 -9.18e-06 -6.35e+01 -8.79e-08]]
-RMSE Test : 18851.68
-R^2 Test: -5607047729.94
-RMSE Train : 0.11
-R^2 Train: 0.81
+[ 2.65e+03 -1.11e+10 -1.92e+03  1.81e+04 -4.51e+03  1.33e+11  3.68e+03 -3.02e+04  3.39e+03 -6.22e+11 -3.09e+03  2.23e+04
+ -9.40e+02  9.44e+11  9.54e+02 -6.16e+03]
+RMSE Train : 0.10
+R^2 Train: 0.83
+RMSE Test : 239292488038.93
+R^2 Test: -903425261936573960683520.00
+
+Order 5:
+Training Took 0.11 seconds
+Coefficients:
+[-2.99e+04 -1.22e+10  9.13e+03 -3.28e+05  7.31e+04  1.42e+11 -2.55e+04  7.43e+05 -8.87e+04 -6.21e+11  3.53e+04 -8.41e+05
+  5.35e+04  7.20e+11 -2.41e+04  4.75e+05 -1.28e+04  4.99e+11  6.51e+03 -1.07e+05]
+RMSE Train : 0.10
+R^2 Train: 0.83
+RMSE Test : 391560956060.76
+R^2 Test: -2418983244784230671056896.00
 """
 
 """
@@ -62,19 +72,28 @@ e)  When training with higher orders, while the training data kept a small error
     the model becomes over fit with any order greater than 1
 """
 
+# variables
+order = 2  # order of data
+percent = 0.5  # Amount of data used for training
+
 # Load the dataset
 df = pd.read_csv("Data1.csv")
 
-percent = 0.5  # Amount of data used for training
 split_index = int(len(df) * percent)
 
-data_y = df.drop(columns=["T", "P", "TC", "SV"]).to_numpy()
+data_y = df.drop(columns=["T", "P", "TC", "SV"]).to_numpy().T[0]
 data_X = df.drop(columns="Idx").to_numpy()
 
 
-data_X = increase_order(mat=data_X, order=1)
+data_X = increase_order(mat=data_X, order=order)
+data_X = normalize(data_X)
 print("Order set")
 
+n, _ = data_X.shape
+ones = np.ones((n, 1))
+data_X = np.hstack((ones, data_X))
+
+print(data_X)
 
 # Split the data into training/testing sets
 data_X_train = data_X[:split_index]
@@ -101,11 +120,11 @@ data_y_pred_train = regr.predict(data_X_train)
 print("Coefficients:")
 print(regr.coef_)
 # The mean squared error
-print(f"RMSE Test : {sqrt(mse(data_y_test, data_y_pred_test)).real:.2f}")
-# The mean squared error
-print(f"R^2 Test: {r2_score(data_y_test, data_y_pred_test):.2f}")
-
-# The mean squared error
 print(f"RMSE Train : {sqrt(mse(data_y_train, data_y_pred_train)).real:.2f}")
 # The mean squared error
 print(f"R^2 Train: {r2_score(data_y_train, data_y_pred_train):.2f}")
+
+# The mean squared error
+print(f"RMSE Test : {sqrt(mse(data_y_test, data_y_pred_test)).real:.2f}")
+# The mean squared error
+print(f"R^2 Test: {r2_score(data_y_test, data_y_pred_test):.2f}")

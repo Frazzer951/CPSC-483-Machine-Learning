@@ -3,6 +3,7 @@
         "coef",
         "hstack",
         "ndarray",
+        "RMSE",
         "sklearn"
     ]
 }
