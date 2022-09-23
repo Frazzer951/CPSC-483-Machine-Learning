@@ -11,25 +11,25 @@ np.set_printoptions(precision=2, linewidth=127)
 
 """
 Order 1:
-Training Took 0.027 seconds
+Training Took 0.025 seconds
 Coefficients:
-[  0.    15.25  -0.31  -2.87 -25.58]
+[ 15.25  -0.31  -2.87 -25.58]
 RMSE Train : 0.12
 R^2 Train: 0.77
 RMSE Test : 0.41
 R^2 Test: -1.63
 
 Order 2:
-Training Took 0.048 seconds
+Training Took 0.042 seconds
 Coefficients:
-[  0.    16.64  -0.89  11.14 -98.53   0.52   1.7  -10.27  40.59]
+[ 16.64  -0.89  11.14 -98.53   0.52   1.7  -10.27  40.59]
 RMSE Train : 0.11
 R^2 Train: 0.80
 RMSE Test : 0.92
 R^2 Test: -12.25
 
 Order 3:
-Training Took 0.063 seconds
+Training Took 0.069 seconds
 Coefficients:
 [ 417.13   -2.97 -187.24  370.69 -493.77   19.1   267.8  -519.28  202.78  -35.01 -129.61  222.1 ]
 RMSE Train : 0.11
@@ -61,11 +61,11 @@ R^2 Test: -2418983244784230671056896.00
 """
 #1
 b)  The training and testing data was split 50/50
-c)  RMSE Train : 0.11
-    R^2 Train: 0.80
-    RMSE Test : 0.92
-    R^2 Test: -12.25
-    Took 0.023 seconds to train
+c)  RMSE Train : 0.12
+    R^2 Train: 0.77
+    RMSE Test : 0.41
+    R^2 Test: -1.63
+    Took 0.025 seconds to train
 d)  4 terms in total, with a polynomial order of 1
 e)  When training with higher orders, while the training data kept a small error,
     the testing data had a huge increase in error. This leads me to believe that
@@ -73,7 +73,7 @@ e)  When training with higher orders, while the training data kept a small error
 """
 
 # variables
-order = 2  # order of data
+order = 1  # order of data
 percent = 0.5  # Amount of data used for training
 
 # Load the dataset
@@ -89,9 +89,6 @@ data_X = increase_order(mat=data_X, order=order)
 data_X = normalize(data_X)
 print("Order set")
 
-n, _ = data_X.shape
-ones = np.ones((n, 1))
-data_X = np.hstack((ones, data_X))
 
 print(data_X)
 
