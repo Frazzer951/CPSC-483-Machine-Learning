@@ -17,14 +17,3 @@ def increase_order(mat: np.ndarray, order):
         return np.hstack((mat, new_cols))
 
     return mat
-
-
-def predict(weight, data):
-    predictions = []
-    wt = weight.T
-    for row in data:
-        feats = [1]
-        feats.extend(row)
-        pred = wt.dot(feats)
-        predictions.append(pred)
-    return np.array(predictions)
