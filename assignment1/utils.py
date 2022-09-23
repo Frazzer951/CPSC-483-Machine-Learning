@@ -17,3 +17,9 @@ def increase_order(mat: np.ndarray, order):
         return np.hstack((mat, new_cols))
 
     return mat
+
+
+def normalize(matrix):
+    mat_max = matrix.max(axis=0)
+    matrix = matrix / mat_max
+    return matrix
