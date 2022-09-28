@@ -1,6 +1,5 @@
 from cmath import sqrt
 
-# from select import kevent
 from time import time
 import pandas as pd
 import numpy as np
@@ -66,7 +65,7 @@ for k in range(K_folds):
     W = regr.coef_.copy()
 
     # Ridge reduction of model
-    print(f"Running Ridge Reduction On The Model")
+    print("Running Ridge Reduction On The Model")
 
     for i in range(len(regr.coef_)):
         regr.coef_[i] = regr.coef_[i] + lam * regr.coef_[i] ** 2
@@ -92,7 +91,7 @@ for k in range(K_folds):
     print()
 
     # LASSO reduction of model
-    print(f"Running LASSO Reduction On The Model")
+    print("Running LASSO Reduction On The Model")
 
     regr.coef_ = W.copy()
     for i in range(len(regr.coef_)):
@@ -119,7 +118,7 @@ for k in range(K_folds):
     print()
 
     # Elastic reduction of model (LASSO has already been applied, so we will just reapply Ridge)
-    print(f"Running Elastic Reduction On The Model")
+    print("Running Elastic Reduction On The Model")
 
     for i in range(len(regr.coef_)):
         regr.coef_[i] = regr.coef_[i] + lam * regr.coef_[i] ** 2
@@ -143,6 +142,8 @@ for k in range(K_folds):
     # The mean squared error
     print(f"R^2 Test: {r2_score(data_y[k], data_y_pred_test):.2f}")
     print()
+
+    regr.coef_ = W.copy()
 # End of for loop
 
 # Get the mean weights for Ridge model
@@ -155,7 +156,7 @@ for sum in Sums:
     sum /= len(Ridge_models)
 
 # Mean Ridge model
-print(f"Mean Weights Of Ridge Models:")
+print("Mean Weights Of Ridge Models:")
 print(Sums)
 print()
 
@@ -169,7 +170,7 @@ for sum in Sums:
     sum /= len(Lasso_models)
 
 # Mean LASSO model
-print(f"Mean Weights Of LASSO Models:")
+print("Mean Weights Of LASSO Models:")
 print(Sums)
 print()
 
@@ -183,6 +184,6 @@ for sum in Sums:
     sum /= len(Elastic_models)
 
 # Mean Ridge model
-print(f"Mean Weights Of Elastic Models:")
+print("Mean Weights Of Elastic Models:")
 print(Sums)
 print()
