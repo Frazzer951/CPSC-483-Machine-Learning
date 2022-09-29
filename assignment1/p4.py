@@ -3,7 +3,9 @@ from time import time
 import pandas as pd
 import numpy as np
 from sklearn import linear_model
+from sklearn.linear_model import Ridge, ElasticNet
 from sklearn.metrics import mean_squared_error as mse, r2_score
+from sklearn.preprocessing import MinMaxScaler
 
 from utils import increase_order
 
@@ -11,7 +13,8 @@ np.set_printoptions(precision=2, linewidth=127)
 
 # variables
 order = 2  # order of data
-lam = 10**-5  # Reduction tuning parameter
+lam = 10**-4  # Reduction tuning parameter
+iters = 20_000  # number of iterations
 percent = 0.5  # Amount of data used for training
 
 # Load the dataset
@@ -25,6 +28,7 @@ data_X = df.drop(columns="Idx").to_numpy()
 
 
 data_X = increase_order(mat=data_X, order=order)
+data_X = MinMaxScaler().fit_transform(data_X)
 print("Order set")
 
 
@@ -41,31 +45,40 @@ data_y_train = data_y[:split_index]
 data_y_test = data_y[split_index:]
 
 
-# Create linear regression object
-regr = linear_model.LinearRegression()
+# Create linear regression objects
+r_regr = Ridge(alpha=lam, solver="sag", max_iter=iters)
+l_regr = linear_model.Lasso(alpha=lam, max_iter=iters)
+e_regr = ElasticNet(alpha=lam, max_iter=iters)
 
-# Train the model using the training sets
+
+# Train the models using the training sets
 print("Start Training")
 start_time = time()
-
-regr.fit(data_X_train, data_y_train)
+r_regr.fit(data_X_train, data_y_train)
 print(f"Training Took {time()-start_time:.2} seconds")
 print()
 
-W = regr.coef_.copy()
+print("Start Training")
+start_time = time()
+l_regr.fit(data_X_train, data_y_train)
+print(f"Training Took {time()-start_time:.2} seconds")
+print()
+
+print("Start Training")
+start_time = time()
+e_regr.fit(data_X_train, data_y_train)
+print(f"Training Took {time()-start_time:.2} seconds")
+print()
+
 
 # Ridge reduction of model
+
 print(f"Running Ridge Reduction On The Model")
-
-for i in range(len(regr.coef_)):
-    regr.coef_[i] = regr.coef_[i] + lam * regr.coef_[i] ** 2
-
-
 # Make predictions using the testing set
-data_y_pred_test = regr.predict(data_X_test)
-data_y_pred_train = regr.predict(data_X_train)
+data_y_pred_test = r_regr.predict(data_X_test)
+data_y_pred_train = r_regr.predict(data_X_train)
 print("Coefficients:")
-print(regr.coef_)
+print(r_regr.coef_)
 
 # The mean squared error
 print(f"RMSE Train : {sqrt(mse(data_y_train, data_y_pred_train)).real:.2f}")
@@ -80,18 +93,13 @@ print()
 
 
 # LASSO reduction of model
+
 print(f"Running LASSO Reduction On The Model")
-
-regr.coef_ = W.copy()
-for i in range(len(regr.coef_)):
-    regr.coef_[i] = regr.coef_[i] + lam * abs(regr.coef_[i])
-
-
 # Make predictions using the testing set
-data_y_pred_test = regr.predict(data_X_test)
-data_y_pred_train = regr.predict(data_X_train)
+data_y_pred_test = l_regr.predict(data_X_test)
+data_y_pred_train = l_regr.predict(data_X_train)
 print("Coefficients:")
-print(regr.coef_)
+print(l_regr.coef_)
 
 # The mean squared error
 print(f"RMSE Train : {sqrt(mse(data_y_train, data_y_pred_train)).real:.2f}")
@@ -105,18 +113,14 @@ print(f"R^2 Test: {r2_score(data_y_test, data_y_pred_test):.2f}")
 print()
 
 
-# Elastic reduction of model (LASSO has already been applied, so we will just reapply Ridge)
+# Elastic reduction of model
+
 print(f"Running Elastic Reduction On The Model")
-
-for i in range(len(regr.coef_)):
-    regr.coef_[i] = regr.coef_[i] + lam * regr.coef_[i] ** 2
-
-
 # Make predictions using the testing set
-data_y_pred_test = regr.predict(data_X_test)
-data_y_pred_train = regr.predict(data_X_train)
+data_y_pred_test = e_regr.predict(data_X_test)
+data_y_pred_train = e_regr.predict(data_X_train)
 print("Coefficients:")
-print(regr.coef_)
+print(e_regr.coef_)
 
 # The mean squared error
 print(f"RMSE Train : {sqrt(mse(data_y_train, data_y_pred_train)).real:.2f}")
