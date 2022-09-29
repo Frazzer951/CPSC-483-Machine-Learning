@@ -11,9 +11,9 @@ np.set_printoptions(precision=2, linewidth=127)
 
 """
 Order 1:
-Training Took 0.025 seconds
+Training Took 0.028 seconds
 Coefficients:
-[ 15.25  -0.31  -2.87 -25.58]
+[ 4.32e-02 -1.02e-03 -6.78e+01 -5.49e-02]
 RMSE Train : 0.12
 R^2 Train: 0.77
 RMSE Test : 0.41
@@ -22,58 +22,25 @@ R^2 Test: -1.63
 Order 2:
 Training Took 0.042 seconds
 Coefficients:
-[ 16.64  -0.89  11.14 -98.53   0.52   1.7  -10.27  40.59]
+[ 4.71e-02 -2.95e-03  2.63e+02 -2.12e-01  4.16e-06  1.89e-05 -5.72e+03  1.87e-04]
 RMSE Train : 0.11
 R^2 Train: 0.80
 RMSE Test : 0.92
 R^2 Test: -12.25
 
 Order 3:
-Training Took 0.069 seconds
+Training Took 0.06 seconds
 Coefficients:
-[ 417.13   -2.97 -187.24  370.69 -493.77   19.1   267.8  -519.28  202.78  -35.01 -129.61  222.1 ]
+[ 1.18e+00 -9.92e-03 -4.42e+03  7.96e-01 -3.96e-03  2.12e-04  1.49e+05 -2.39e-03  4.60e-06 -1.30e-06 -1.70e+06  2.20e-06]
 RMSE Train : 0.11
 R^2 Train: 0.82
 RMSE Test : 10.16
-R^2 Test: -1628.57
-
-Order 4:
-Training Took 0.084 seconds
-Coefficients:
-[ 2.65e+03 -1.11e+10 -1.92e+03  1.81e+04 -4.51e+03  1.33e+11  3.68e+03 -3.02e+04  3.39e+03 -6.22e+11 -3.09e+03  2.23e+04
- -9.40e+02  9.44e+11  9.54e+02 -6.16e+03]
-RMSE Train : 0.10
-R^2 Train: 0.83
-RMSE Test : 239292488038.93
-R^2 Test: -903425261936573960683520.00
-
-Order 5:
-Training Took 0.11 seconds
-Coefficients:
-[-2.99e+04 -1.22e+10  9.13e+03 -3.28e+05  7.31e+04  1.42e+11 -2.55e+04  7.43e+05 -8.87e+04 -6.21e+11  3.53e+04 -8.41e+05
-  5.35e+04  7.20e+11 -2.41e+04  4.75e+05 -1.28e+04  4.99e+11  6.51e+03 -1.07e+05]
-RMSE Train : 0.10
-R^2 Train: 0.83
-RMSE Test : 391560956060.76
-R^2 Test: -2418983244784230671056896.00
+R^2 Test: -1628.58
 """
 
-"""
-#1
-b)  The training and testing data was split 50/50
-c)  RMSE Train : 0.12
-    R^2 Train: 0.77
-    RMSE Test : 0.41
-    R^2 Test: -1.63
-    Took 0.025 seconds to train
-d)  4 terms in total, with a polynomial order of 1
-e)  When training with higher orders, while the training data kept a small error,
-    the testing data had a huge increase in error. This leads me to believe that
-    the model becomes over fit with any order greater than 1
-"""
 
 # variables
-order = 1  # order of data
+order = 3  # order of data
 percent = 0.5  # Amount of data used for training
 
 # Load the dataset

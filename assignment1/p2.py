@@ -11,70 +11,41 @@ np.set_printoptions(precision=2, linewidth=127)
 
 """
 Order 1:
-Training Took 109.49 seconds
-Final Weight [37.32  1.42  5.53 -2.51 18.48]
+Training Took 108.48 seconds
+Final Weight [52.05 -3.6   2.53 -0.92  7.03]
 Coefficients:
-[37.32  1.42  5.53 -2.51 18.48]
-RMSE Train : 0.83
-R^2 Train: -9.93
-RMSE Test : 2.76
-R^2 Test: -119.59
+[52.05 -3.6   2.53 -0.92  7.03]
+RMSE Train : 0.51
+R^2 Train: -3.12
+RMSE Test : 0.71
+R^2 Test: -7.03
 
 Order 2:
-Training Took 178.53 seconds
-Final Weight [30.49  8.35  3.76  5.51 18.25 -7.47  1.48 -9.83  8.26]
+Training Took 175.58 seconds
+Final Weight [ 5.12e+01 -2.49e+00  2.62e+00 -1.76e-02  5.84e+00 -2.99e+00  1.27e+00 -1.15e+00  4.45e+00]
 Coefficients:
-[30.49  8.35  3.76  5.51 18.25 -7.47  1.48 -9.83  8.26]
-RMSE Train : 0.57
-R^2 Train: -4.09
-RMSE Test : 1.68
-R^2 Test: -43.65
+[ 5.12e+01 -2.49e+00  2.62e+00 -1.76e-02  5.84e+00 -2.99e+00  1.27e+00 -1.15e+00  4.45e+00]
+RMSE Train : 0.64
+R^2 Train: -5.49
+RMSE Test : 1.05
+R^2 Test: -16.30
 
 Order 3:
-Training Took 249.28 seconds
-Final Weight [25.04  9.96  3.15  8.02 16.15 -0.44  1.31 -2.14  8.97 -7.5   1.08 -7.93  3.19]
+Training Took 250.78 seconds
+Final Weight [50.98 -1.97  2.67  0.53  4.97 -2.11  1.28 -0.33  3.67 -2.2   1.03 -1.    2.44]
 Coefficients:
-[25.04  9.96  3.15  8.02 16.15 -0.44  1.31 -2.14  8.97 -7.5   1.08 -7.93  3.19]
-RMSE Train : 0.70
-R^2 Train: -6.71
-RMSE Test : 1.65
-R^2 Test: -41.73
-
-Order 4:
-Training Took 337.38 seconds
-Final Weight [22.51 10.11  2.76  8.62 14.84  1.96  1.18  0.73  8.74 -3.21  1.03 -3.46  3.9  -6.31  1.01 -5.41  0.11]
-Coefficients:
-[22.51 10.11  2.76  8.62 14.84  1.96  1.18  0.73  8.74 -3.21  1.03 -3.46  3.9  -6.31  1.01 -5.41  0.11]
-RMSE Train : 0.81
-R^2 Train: -9.44
-RMSE Test : 1.99
-R^2 Test: -61.18
-
-Order 5:
-Training Took 415.44 seconds
-Final Weight [21.51 10.02  2.34  8.74 14.26  2.79  1.02  1.83  8.54 -1.5   0.97 -1.55  4.07 -3.77  0.99 -2.85  0.63 -4.69  1.   -2.98 -1.99]
-Coefficients:
-[21.51 10.02  2.34  8.74 14.26  2.79  1.02  1.83  8.54 -1.5   0.97 -1.55  4.07 -3.77  0.99 -2.85  0.63 -4.69  1.   -2.98 -1.99]
-RMSE Train : 0.87
-R^2 Train: -10.97
-RMSE Test : 2.49
-R^2 Test: -96.94
-"""
-
-"""
-#1
-b)
-c)
-d)
-e)
-f)
+[50.98 -1.97  2.67  0.53  4.97 -2.11  1.28 -0.33  3.67 -2.2   1.03 -1.    2.44]
+RMSE Train : 0.69
+R^2 Train: -6.55
+RMSE Test : 1.56
+R^2 Test: -37.33
 """
 
 
 # variables
 alpha = 0.01  # tuning parameter
 iters = 20_000  # number of iterations
-order = 1  # order of data
+order = 3  # order of data
 percent = 0.5  # Amount of data used for training
 
 # Load the dataset
