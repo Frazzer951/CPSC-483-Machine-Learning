@@ -3,8 +3,9 @@ from time import time
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error as mse, r2_score
+from sklearn.preprocessing import MinMaxScaler
 
-from utils import increase_order, normalize
+from utils import increase_order
 
 np.set_printoptions(precision=2, linewidth=127)
 
@@ -73,7 +74,7 @@ f)
 # variables
 alpha = 0.01  # tuning parameter
 iters = 20_000  # number of iterations
-order = 5  # order of data
+order = 1  # order of data
 percent = 0.5  # Amount of data used for training
 
 # Load the dataset
@@ -86,7 +87,7 @@ data_X = df.drop(columns="Idx").to_numpy()
 
 
 data_X = increase_order(mat=data_X, order=order)
-data_X = normalize(data_X)
+data_X = MinMaxScaler().fit_transform(data_X)
 print("Order set")
 
 n, _ = data_X.shape

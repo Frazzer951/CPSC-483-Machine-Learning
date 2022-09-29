@@ -6,7 +6,7 @@ from sklearn import linear_model
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error as mse, r2_score
 
-from utils import increase_order, normalize
+from utils import increase_order
 
 np.set_printoptions(precision=2, linewidth=127)
 
@@ -97,10 +97,6 @@ data_X_std = StandardScaler().fit_transform(X=data_X, y=data_y_std)
 # print(data_X_std[2])
 
 # Part 3 Modifications Start here
-
-
-# Normalize X data
-data_X = normalize(data_X)
 
 
 # Split the data into training/testing sets

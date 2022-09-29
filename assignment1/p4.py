@@ -5,7 +5,7 @@ import numpy as np
 from sklearn import linear_model
 from sklearn.metrics import mean_squared_error as mse, r2_score
 
-from utils import increase_order, normalize
+from utils import increase_order
 
 np.set_printoptions(precision=2, linewidth=127)
 
@@ -25,7 +25,6 @@ data_X = df.drop(columns="Idx").to_numpy()
 
 
 data_X = increase_order(mat=data_X, order=order)
-data_X = normalize(data_X)
 print("Order set")
 
 
