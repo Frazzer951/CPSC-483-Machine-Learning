@@ -1,7 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
-
 
 np.set_printoptions(precision=2, linewidth=127)
 pd.options.display.float_format = "{:,.2f}".format
