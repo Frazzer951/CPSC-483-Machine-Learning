@@ -56,7 +56,8 @@ print(list(exp_var))
 
 
 # pt1 f)
-cor_mat = np.corrcoef(c_data_X_tran, proj_mat.T)
+combined_data = np.hstack((centered_data_X, proj_mat))
+cor_mat = np.corrcoef(combined_data.T)
 print("\nCorrelation Matrix:")
 print(cor_mat)
 
