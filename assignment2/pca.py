@@ -1,10 +1,12 @@
 from cmath import sqrt
+from time import time
+
 import numpy as np
 import pandas as pd
-from time import time
 from sklearn import linear_model
+from sklearn.metrics import mean_squared_error as mse
+from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error as mse, r2_score
 
 np.set_printoptions(precision=2, linewidth=127)
 pd.options.display.float_format = "{:,.2f}".format

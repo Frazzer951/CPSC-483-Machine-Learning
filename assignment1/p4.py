@@ -1,12 +1,13 @@
 from cmath import sqrt
 from time import time
-import pandas as pd
-import numpy as np
-from sklearn import linear_model
-from sklearn.linear_model import Ridge, ElasticNet
-from sklearn.metrics import mean_squared_error as mse, r2_score
-from sklearn.preprocessing import MinMaxScaler
 
+import numpy as np
+import pandas as pd
+from sklearn import linear_model
+from sklearn.linear_model import ElasticNet, Ridge
+from sklearn.metrics import mean_squared_error as mse
+from sklearn.metrics import r2_score
+from sklearn.preprocessing import MinMaxScaler
 from utils import increase_order
 
 np.set_printoptions(precision=2, linewidth=127)
