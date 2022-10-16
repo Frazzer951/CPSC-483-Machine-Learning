@@ -1,14 +1,20 @@
+from cmath import sqrt
 import numpy as np
 import pandas as pd
-from sklearn.feature_selection import VarianceThreshold
+from time import time
+from sklearn import linear_model
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error as mse, r2_score
 
 np.set_printoptions(precision=2, linewidth=127)
 pd.options.display.float_format = "{:,.2f}".format
 
+percent = 0.5  # Amount of data used for training
+
 # Load the dataset
 df = pd.read_csv("Data1.csv")
 
+split_index = int(len(df) * percent)
 
 data_y = df.drop(columns=["T", "P", "TC", "SV"]).to_numpy().T[0]
 data_X = df.drop(columns="Idx").to_numpy()
@@ -88,3 +94,81 @@ for i, bool in enumerate(kaiser_keep):
 print("\nKaiser Criteria")
 print(kaiser_keep)
 print(kaiser)
+
+# pt2 c)
+pca_analysis = pd.DataFrame(
+    cor_mat, columns=[f"PC{n-4}" for n in range(8)], index=["T", "P", "TC", "SV", "remove", "remove", "remove", "remove"]
+)
+pca_analysis = pca_analysis.drop(columns=["PC-4", "PC-3", "PC-2", "PC-1"], axis=1)
+pca_analysis = pca_analysis.drop(["remove"], axis=0)
+
+print("Correlation Matrix with PC's")
+print(pca_analysis)
+
+
+# Part 3 Starts here
+ev80 = ev80.to_numpy()
+data_pc = np.matmul(centered_data_X, ev80)
+print("\nPrincipal Component Data Using Explained Variance > 80%:")
+print(data_pc)
+
+
+# Split the data into training/testing sets
+data_X_train = centered_data_X[:split_index]
+data_X_test = centered_data_X[split_index:]
+
+data_pc_train = data_pc[:split_index]
+data_pc_test = data_pc[split_index:]
+
+# Split the targets into training/testing sets
+data_y_train = data_y[:split_index]
+data_y_test = data_y[split_index:]
+
+# Create linear regression object
+regr = linear_model.LinearRegression()
+
+print("\nModel Created With Original Data:")
+
+# Train the model using the training sets
+start_time = time()
+regr.fit(data_X_train, data_y_train)
+print(f"Training Took {time()-start_time:.2} seconds")
+
+# Make predictions using the testing set
+data_y_pred_test = regr.predict(data_X_test)
+data_y_pred_train = regr.predict(data_X_train)
+print("Coefficients:")
+print(regr.coef_)
+# The mean squared error
+print(f"RMSE Train : {sqrt(mse(data_y_train, data_y_pred_train)).real:.2f}")
+# The mean squared error
+print(f"R^2 Train: {r2_score(data_y_train, data_y_pred_train):.2f}")
+
+# The mean squared error
+print(f"RMSE Test : {sqrt(mse(data_y_test, data_y_pred_test)).real:.2f}")
+# The mean squared error
+print(f"R^2 Test: {r2_score(data_y_test, data_y_pred_test):.2f}")
+print()
+
+
+print("\nModel Created With Principal Components")
+# Train the model using the training sets
+start_time = time()
+regr.fit(data_pc_train, data_y_train)
+print(f"Training Took {time()-start_time:.2} seconds")
+
+# Make predictions using the testing set
+data_y_pred_test = regr.predict(data_pc_test)
+data_y_pred_train = regr.predict(data_pc_train)
+print("Coefficients:")
+print(regr.coef_)
+# The mean squared error
+print(f"RMSE Train : {sqrt(mse(data_y_train, data_y_pred_train)).real:.2f}")
+# The mean squared error
+print(f"R^2 Train: {r2_score(data_y_train, data_y_pred_train):.2f}")
+
+# The mean squared error
+print(f"RMSE Test : {sqrt(mse(data_y_test, data_y_pred_test)).real:.2f}")
+# The mean squared error
+print(f"R^2 Test: {r2_score(data_y_test, data_y_pred_test):.2f}")
+print()
