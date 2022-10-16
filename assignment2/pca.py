@@ -60,7 +60,7 @@ print(coef_mat)
 total_sum = eig_val.sum()
 exp_var = eig_val / total_sum
 print("\nExplained Variance:")
-print(list(exp_var))
+print([round(n, 3) for n in list(exp_var)])
 
 
 # pt1 f)
