@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import accuracy_score
 
-from utils import load_data, preprocess, split_data
+from utils import load_data, preprocess, progressbar, split_data
 
 
 def get_count(text):
@@ -42,13 +42,13 @@ def get_class(selected_values):
 
 def knn_classifier(training_data, training_labels, test_data, K):
     result = []
-    counter = 1
 
     training_counts = []
     for text in training_data:
         training_counts.append(get_count(text))
 
-    for text in test_data:
+    for i in progressbar(range(len(test_data)), "Processing Test Data: "):
+        text = test_data[i]
         similarity = []
         test_counts = get_count(text)
 
@@ -65,8 +65,6 @@ def knn_classifier(training_data, training_labels, test_data, K):
 
         result.append(get_class(selected_values))
 
-        print(f"{counter} / {len(test_data)}")
-        counter += 1
     return result
 
 
