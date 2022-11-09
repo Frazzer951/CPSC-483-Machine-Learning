@@ -1,6 +1,8 @@
+import string
+
+import numpy as np
 import pandas as pd
 from nltk.corpus import stopwords
-import string
 from sklearn.model_selection import train_test_split
 
 
@@ -40,4 +42,9 @@ def split_data(data, tt_ratio=0.50):  # By default have a split of 50% training 
     training_data, test_data, training_labels, test_labels = train_test_split(
         feats, labels, test_size=tt_ratio, random_state=42
     )
-    return training_data, test_data, training_labels, test_labels
+    return (
+        training_data.to_numpy(),
+        test_data.to_numpy(),
+        training_labels.to_numpy(dtype=np.bool_),
+        test_labels.to_numpy(dtype=np.bool_),
+    )
