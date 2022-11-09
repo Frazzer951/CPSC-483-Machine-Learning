@@ -139,5 +139,5 @@ def find_k():
 
 
 if __name__ == "__main__":
-    # main(5)
-    find_k()
+    main(3)
+    # find_k()
