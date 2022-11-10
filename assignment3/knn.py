@@ -51,28 +51,7 @@ def knn_classifier(training_data, training_labels, test_data, K):
     return result
 
 
-def main(K):
-    print("Loading Data")
-    data = load_data()
-    # print(data)
-
-    print("Preprocessing Data")
-    data = preprocess(data)
-    # print(data)
-
-    print("Spliting Data")
-    training_data, test_data, training_labels, test_labels = split_data(data, 0.25)
-
-    # print("Training Data")
-    # print(training_data)
-    # print("Training Labels")
-    # print(training_labels)
-
-    # print("Test Data")
-    # print(test_data)
-    # print("Test Labels")
-    # print(test_labels)
-
+def main(training_data, test_data, training_labels, test_labels, K):
     result = knn_classifier(training_data, training_labels, test_data, K)
     accuracy = accuracy_score(test_labels, result)
 
@@ -84,14 +63,7 @@ def main(K):
     print(f"Number wrong\t\t: {int((1 - accuracy) * len(test_data))}")
 
 
-def find_k():
-    print("Loading Data")
-    data = load_data()
-    print("Preprocessing Data")
-    data = preprocess(data)
-    print("Spliting Data")
-    training_data, test_data, training_labels, test_labels = split_data(data, 0.25)
-
+def find_k(training_data, test_data, training_labels, test_labels):
     accuracies = []
     for K in range(1, 50, 2):
         print(f"\n\nTesting K = {K}")
@@ -122,5 +94,18 @@ def find_k():
 
 
 if __name__ == "__main__":
-    main(13)
-    # find_k()
+    print("Loading Data")
+    data = load_data()
+    # print(data)
+
+    print("Preprocessing Data")
+    data = preprocess(data)
+    # print(data)
+
+    print("Spliting Data")
+    training_data, test_data, training_labels, test_labels = split_data(data, 0.50)
+
+    # More accurate with a training/test split of 75/25 and a K of 13
+
+    main(training_data, test_data, training_labels, test_labels, 9)
+    # find_k(training_data, test_data, training_labels, test_labels)
