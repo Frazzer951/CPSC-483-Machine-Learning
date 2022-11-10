@@ -1,4 +1,4 @@
-from collections import defaultdict
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,25 +7,8 @@ from sklearn.metrics import accuracy_score
 from utils import load_data, preprocess, progressbar, split_data
 
 
-def get_count(text):
-    word_counts = defaultdict(int)
-    for word in text.split():
-        word_counts[word] += 1
-    return word_counts
-
-
-def difference(test_counts, training_counts):
-    """Calculate the Euclidian difference between two word counts"""
-    total = 0
-    for word in test_counts:
-        if word in training_counts:  # If word is in both counts add the square of the difference in frequency
-            total += (test_counts[word] - training_counts[word]) ** 2
-            del training_counts[word]
-        else:  # If word is only in test_counts, add the square of its frequency
-            total += test_counts[word] ** 2
-    for word in training_counts:  # If word is only in training_counts, add the square of its frequency
-        total += training_counts[word] ** 2
-    return total**0.5  # return the sqrt of the total
+def similarity(test_word_set: set, training_word_set: set):
+    return len(test_word_set.intersection(training_word_set))
 
 
 def get_class(selected_values):
@@ -43,25 +26,25 @@ def get_class(selected_values):
 def knn_classifier(training_data, training_labels, test_data, K):
     result = []
 
-    training_counts = []
+    training_sets = []
     for text in training_data:
-        training_counts.append(get_count(text))
+        training_sets.append(set(text.split()))
 
     for i in progressbar(range(len(test_data)), "Processing Test Data: "):
         text = test_data[i]
-        similarity = []
-        test_counts = get_count(text)
+        similarities = []
+        test_set = set(text.split())
 
         for i in range(len(training_data)):
-            diff = difference(test_counts, training_counts[i])
-            similarity.append([training_labels[i], diff])
+            sim = similarity(test_set, training_sets[i])
+            similarities.append([training_labels[i], sim])
 
-        # Sort by difference
-        similarity = sorted(similarity, key=lambda i: i[1])
+        # Sort by max similarity
+        similarities = sorted(similarities, key=lambda i: i[1], reverse=True)
 
         selected_values = []
         for i in range(K):
-            selected_values.append(similarity[i])
+            selected_values.append(similarities[i])
 
         result.append(get_class(selected_values))
 
@@ -110,17 +93,18 @@ def find_k():
     training_data, test_data, training_labels, test_labels = split_data(data, 0.25)
 
     accuracies = []
-    for K in range(1, 25, 2):
+    for K in range(1, 50, 2):
+        print(f"\n\nTesting K = {K}")
         result = knn_classifier(training_data, training_labels, test_data, K)
         accuracy = accuracy_score(test_labels, result)
         accuracies.append([K, accuracy * 100])
-        print(f"K value\t\t\t: {K}")
-        print(f"% accuracy\t\t: {accuracy * 100}")
-        print(f"Number correct\t\t: {int(accuracy * len(test_data))}")
-        print(f"Number wrong\t\t: {int((1 - accuracy) * len(test_data))}")
+        print(f"K value\t\t: {K}")
+        print(f"% accuracy\t: {accuracy * 100}")
+        print(f"Number correct\t: {int(accuracy * len(test_data))}")
+        print(f"Number wrong\t: {int((1 - accuracy) * len(test_data))}")
 
-    accuracies_sorted = sorted(accuracies, key=lambda i: i[1])
-    print(accuracies_sorted)
+    accuracies_sorted = sorted(accuracies, key=lambda i: i[1], reverse=True)
+    pprint(accuracies_sorted)
     print("MAX: " + str(max(accuracies_sorted, key=lambda i: i[1])))
 
     # plot
@@ -129,7 +113,6 @@ def find_k():
     accuracies = K_accuracy[:, 1]
 
     plt.figure()
-    plt.ylim(0, 101)
     plt.plot(K_values, accuracies)
     plt.xlabel("K Value")
     plt.ylabel("% Accuracy")
@@ -139,5 +122,5 @@ def find_k():
 
 
 if __name__ == "__main__":
-    main(3)
+    main(13)
     # find_k()
