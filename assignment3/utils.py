@@ -1,9 +1,11 @@
 import string
 import sys
+from math import sqrt
 
 import numpy as np
 import pandas as pd
 from nltk.corpus import stopwords
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score, roc_curve
 from sklearn.model_selection import train_test_split
 
 
@@ -64,3 +66,23 @@ def progressbar(it, prefix="", size=60, out=sys.stdout):  # Python3.6+
         yield item
         show(i + 1)
     print("\n", flush=True, file=out)
+
+
+def assessment_scores(correct, pred):
+    tn, fp, fn, tp = confusion_matrix(correct, pred).ravel()
+    accuracy = accuracy_score(correct, pred)
+
+    print("Confusion Matrix:")
+    print(confusion_matrix(correct, pred))
+    print()
+
+    print(f"% Accuracy\t\t: {accuracy * 100}")
+    print(f"% Sensitivity\t\t: {tp / (tp + fn) * 100}")
+    print(f"% Specificity\t\t: {tn / (tn + fp) * 100}")
+    print(f"% Precision\t\t: {tp / (tp + fp) * 100}")
+
+    interval = [
+        (1 - accuracy) - 1.96 * sqrt(accuracy * (1 - accuracy) / len(pred)),
+        (1 - accuracy) + 1.96 * sqrt(accuracy * (1 - accuracy) / len(pred)),
+    ]
+    print(f"Confidence Interval\t: {interval}")
