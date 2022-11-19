@@ -1,12 +1,8 @@
-from pprint import pprint
-
-import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.metrics import accuracy_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from utils import assessment_scores, load_data, preprocess, progressbar, split_data
+from utils import assessment_scores, load_data, preprocess, split_data
 
 
 def score(text, word_occurrence):
@@ -64,13 +60,6 @@ def svm_classifier(training_data, training_labels, test_data):
 
 def main(training_data, test_data, training_labels, test_labels):
     result = svm_classifier(training_data, training_labels, test_data)
-    # accuracy = accuracy_score(test_labels, result)
-
-    # print(f"training data size\t: {len(training_data)}")
-    # print(f"test data size\t\t: {len(test_data)}")
-    # print(f"% accuracy\t\t: {accuracy * 100}")
-    # print(f"Number correct\t\t: {int(accuracy * len(test_data))}")
-    # print(f"Number wrong\t\t: {int((1 - accuracy) * len(test_data))}")
 
     assessment_scores(test_labels, result)
 
@@ -86,7 +75,5 @@ if __name__ == "__main__":
 
     print("Spliting Data")
     training_data, test_data, training_labels, test_labels = split_data(data, 0.50)
-
-    # More accurate with a training/test split of 75/25 and a K of 13
 
     main(training_data, test_data, training_labels, test_labels)

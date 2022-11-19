@@ -5,7 +5,7 @@ from math import sqrt
 import numpy as np
 import pandas as pd
 from nltk.corpus import stopwords
-from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score, roc_curve
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
 
 
@@ -53,7 +53,7 @@ def split_data(data, tt_ratio=0.50):  # By default have a split of 50% training 
     )
 
 
-def progressbar(it, prefix="", size=60, out=sys.stdout):  # Python3.6+
+def progressbar(it, prefix="", size=60, out=sys.stdout):  # Python 3.6+
     """https://stackoverflow.com/a/34482761"""
     count = len(it)
 

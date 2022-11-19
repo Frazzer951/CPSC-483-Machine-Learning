@@ -3,7 +3,7 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import accuracy_score
-from utils import load_data, preprocess, progressbar, split_data
+from utils import load_data, preprocess, progressbar, split_data, assessment_scores
 
 
 def similarity(test_word_set: set, training_word_set: set):
@@ -50,7 +50,7 @@ def knn_classifier(training_data, training_labels, test_data, K):
     return result
 
 
-def main(training_data, test_data, training_labels, test_labels, K):
+def knn(training_data, test_data, training_labels, test_labels, K):
     result = knn_classifier(training_data, training_labels, test_data, K)
     accuracy = accuracy_score(test_labels, result)
 
@@ -60,6 +60,8 @@ def main(training_data, test_data, training_labels, test_labels, K):
     print(f"% accuracy\t\t: {accuracy * 100}")
     print(f"Number correct\t\t: {int(accuracy * len(test_data))}")
     print(f"Number wrong\t\t: {int((1 - accuracy) * len(test_data))}")
+
+    assessment_scores(test_labels, result)
 
 
 def find_k(training_data, test_data, training_labels, test_labels):
@@ -106,5 +108,5 @@ if __name__ == "__main__":
 
     # More accurate with a training/test split of 75/25 and a K of 13
 
-    main(training_data, test_data, training_labels, test_labels, 9)
+    knn(training_data, test_data, training_labels, test_labels, 9)
     # find_k(training_data, test_data, training_labels, test_labels)
