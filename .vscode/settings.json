@@ -3,6 +3,8 @@
         "coef",
         "hstack",
         "ndarray",
+        "nltk",
+        "pyplot",
         "RMSE",
         "sklearn"
     ]

@@ -2,10 +2,11 @@ import string
 import sys
 from math import sqrt
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from nltk.corpus import stopwords
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import RocCurveDisplay, accuracy_score, confusion_matrix, roc_auc_score
 from sklearn.model_selection import train_test_split
 
 
@@ -80,6 +81,10 @@ def assessment_scores(correct, pred):
     print(f"% Sensitivity\t\t: {tp / (tp + fn) * 100}")
     print(f"% Specificity\t\t: {tn / (tn + fp) * 100}")
     print(f"% Precision\t\t: {tp / (tp + fp) * 100}")
+    print(f"% ROC Score\t\t: {roc_auc_score(correct, pred)}")
+
+    RocCurveDisplay.from_predictions(correct, pred)
+    plt.show()
 
     interval = [
         (1 - accuracy) - 1.96 * sqrt(accuracy * (1 - accuracy) / len(pred)),

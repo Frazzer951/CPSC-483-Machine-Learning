@@ -3,7 +3,8 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import accuracy_score
-from utils import load_data, preprocess, progressbar, split_data, assessment_scores
+
+from utils import assessment_scores, load_data, preprocess, progressbar, split_data
 
 
 def similarity(test_word_set: set, training_word_set: set):

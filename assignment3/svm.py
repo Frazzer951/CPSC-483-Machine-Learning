@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
+
 from utils import assessment_scores, load_data, preprocess, split_data
 
 
