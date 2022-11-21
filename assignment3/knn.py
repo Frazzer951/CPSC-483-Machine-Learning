@@ -53,15 +53,6 @@ def knn_classifier(training_data, training_labels, test_data, K):
 
 def knn(training_data, test_data, training_labels, test_labels, K):
     result = knn_classifier(training_data, training_labels, test_data, K)
-    accuracy = accuracy_score(test_labels, result)
-
-    print(f"training data size\t: {len(training_data)}")
-    print(f"test data size\t\t: {len(test_data)}")
-    print(f"K value\t\t\t: {K}")
-    print(f"% accuracy\t\t: {accuracy * 100}")
-    print(f"Number correct\t\t: {int(accuracy * len(test_data))}")
-    print(f"Number wrong\t\t: {int((1 - accuracy) * len(test_data))}")
-
     assessment_scores(test_labels, result)
 
 
@@ -74,8 +65,6 @@ def find_k(training_data, test_data, training_labels, test_labels):
         accuracies.append([K, accuracy * 100])
         print(f"K value\t\t: {K}")
         print(f"% accuracy\t: {accuracy * 100}")
-        print(f"Number correct\t: {int(accuracy * len(test_data))}")
-        print(f"Number wrong\t: {int((1 - accuracy) * len(test_data))}")
 
     accuracies_sorted = sorted(accuracies, key=lambda i: i[1], reverse=True)
     pprint(accuracies_sorted)
