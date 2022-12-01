@@ -304,7 +304,7 @@ print("> Input digits:")
 print(labels)
 predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, MLP_model, test_dataloader)
 print("> Predicted digits by MLP model")
-print(predicted_digits)
+#print(predicted_digits)
 
 print("............Training CNN................")
 is_MLP = False
@@ -312,7 +312,7 @@ train_loss = train_ANN_model(num_epochs, train_dataloader, device, CUDA_enabled,
 print("............Testing CNN model................")
 predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, CNN_model, test_dataloader)
 print("> Predicted digits by CNN model")
-print(predicted_digits)
+#print(predicted_digits)
 
 #### To save and load models and model's parameters ####
 # To save and load model parameters
