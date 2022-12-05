@@ -18,6 +18,10 @@ class MLP(nn.Module):  # All models should inherit from nn.Module
         super(MLP, self).__init__()
         # nn.Linear(in_features, out_features, bias): y = w^Tx + bias
         self.hidden1 = nn.Linear(num_input, hidden1_size)  # connection between input and hidden layer1
+        self.hidden2 = nn.Linear(hidden1_size, hidden1_size)
+        self.hidden3 = nn.Linear(hidden1_size, hidden1_size)
+        self.hidden4 = nn.Linear(hidden1_size, hidden1_size)
+        self.hidden5 = nn.Linear(hidden1_size, hidden1_size)
         self.output = nn.Linear(hidden1_size, num_classes)
 
         # The model structure can be also defined using "sequential" function
@@ -29,7 +33,11 @@ class MLP(nn.Module):  # All models should inherit from nn.Module
         # In this implementation, the activation function is reLU, but you can try other functions
         # torch.nn.functional modeule consists of all the activation functions and output functions
         h1_out = AF.relu(self.hidden1(x))
-        output = self.output(h1_out)
+        h2_out = AF.relu(self.hidden2(h1_out))
+        h3_out = AF.relu(self.hidden3(h2_out))
+        h4_out = AF.relu(self.hidden3(h3_out))
+        h5_out = AF.relu(self.hidden3(h4_out))
+        output = self.output(h5_out)
         # AF.softmax() is NOT needed when CrossEntropyLoss() is used as it already combines both LogSoftMax() and NLLLoss()
 
         # return self.seq_linear(x) # If the model structrue is define by sequential function.
@@ -171,7 +179,7 @@ if torch.cuda.is_available():
     cuda_id = torch.cuda.current_device()
     print("ID of the CUDA device:", cuda_id)
     print("The name of the CUDA device:", torch.cuda.get_device_name(cuda_id))
-    # """
+    """
     # Maxtrix multiplication C = A*B
     d = 20000  # Try to change this dimension and see the difference
     print("CPU and GPU comparison for ", d, "x", d, "matrix multiplication C = A*B")
@@ -188,7 +196,7 @@ if torch.cuda.is_available():
     B = torch.rand(d, d).cuda()
     C = torch.mm(A, B)
     print("Torch.CUDA took: ", (time.time() - start_time), "seconds\n")
-    # """
+    """
     print("GPU will be utilized for computation.")
 else:
     print("CUDA is NOT supported in your machine. Only CPU will be used for computation.")
@@ -242,7 +250,7 @@ print("> Number of batches loaded for testing: ", num_test_batches)
 ### Let's display some images from the first batch to see what actual digit images look like
 iterable_batches = iter(train_dataloader)  # making a dataset iterable
 images, labels = next(iterable_batches)  # If you can call next() again, you get the next batch until no more batch left
-show_digit_image = True
+show_digit_image = False
 if show_digit_image:
     show_some_digit_images(images)
 
@@ -250,7 +258,7 @@ if show_digit_image:
 # Architectural parameters: You can change these parameters except for num_input and num_classes
 num_input = 28 * 28  # 28X28=784 pixels of image
 num_classes = 10  # output layer
-num_hidden = 10  # number of neurons at the first hidden layer
+num_hidden = 200  # number of neurons at the first hidden layer
 # Randomly selected neurons by dropout_pr probability will be dropped (zeroed out) for regularization.
 dropout_pr = 0.05
 
@@ -280,7 +288,7 @@ loss_func = nn.CrossEntropyLoss()
 ### Choose a gradient method
 # model hyperparameters and gradient methods
 # optim.SGD performs gradient descent and update the weigths through backpropagation.
-num_epochs = 1
+num_epochs = 7
 alpha = 0.01  # learning rate
 gamma = 0.5  # momentum
 # Stochastic Gradient Descent (SGD) is used in this program.
@@ -293,26 +301,34 @@ for var_name in MLP_optimizer.state_dict():
 # CNN optimizer
 CNN_optimizer = optim.SGD(CNN_model.parameters(), lr=alpha, momentum=gamma)
 
-### Train your networks
-print("............Training MLP................")
 # To turn on/off CUDA if I don't want to use it.
 CUDA_enabled = True
-is_MLP = True
-train_loss = train_ANN_model(num_epochs, train_dataloader, device, CUDA_enabled, is_MLP, MLP_model, loss_func, MLP_optimizer)
-print("............Testing MLP model................")
-print("> Input digits:")
-print(labels)
-predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, MLP_model, test_dataloader)
-print("> Predicted digits by MLP model")
-#print(predicted_digits)
 
-print("............Training CNN................")
-is_MLP = False
-train_loss = train_ANN_model(num_epochs, train_dataloader, device, CUDA_enabled, is_MLP, CNN_model, loss_func, CNN_optimizer)
-print("............Testing CNN model................")
-predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, CNN_model, test_dataloader)
-print("> Predicted digits by CNN model")
-#print(predicted_digits)
+if True:
+    ### Train your networks
+    print("............Training MLP................")
+    is_MLP = True
+    train_loss = train_ANN_model(
+        num_epochs, train_dataloader, device, CUDA_enabled, is_MLP, MLP_model, loss_func, MLP_optimizer
+    )
+    print("............Testing MLP model................")
+    # print("> Input digits:")
+    # print(labels)
+    predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, MLP_model, test_dataloader)
+    # print("> Predicted digits by MLP model")
+    # print(predicted_digits)
+
+
+if False:
+    print("............Training CNN................")
+    is_MLP = False
+    train_loss = train_ANN_model(
+        num_epochs, train_dataloader, device, CUDA_enabled, is_MLP, CNN_model, loss_func, CNN_optimizer
+    )
+    print("............Testing CNN model................")
+    predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, CNN_model, test_dataloader)
+    # print("> Predicted digits by CNN model")
+    # print(predicted_digits)
 
 #### To save and load models and model's parameters ####
 # To save and load model parameters
