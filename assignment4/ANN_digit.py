@@ -63,6 +63,8 @@ class CNN(nn.Module):
         # Fully connected layer after convolutional and pooling layers
         self.num_flatten_nodes = 10 * 6 * 6  # Flatten nodes from 10 channels and 6*6 pool_size = 10*6*6=360
         self.fc1 = nn.Linear(self.num_flatten_nodes, num_hidden)
+        self.fc2 = nn.Linear(num_hidden, num_hidden)
+        self.fc3 = nn.Linear(num_hidden, num_hidden)
         # + You can add more hidden layers here if necessary
         self.out = nn.Linear(num_hidden, num_classes)  # the output nodes are 10 classes (10 digits)
 
@@ -71,6 +73,8 @@ class CNN(nn.Module):
         out = AF.relu(self.dropout_conv1(out))
         out = out.view(-1, self.num_flatten_nodes)  # flattening
         out = AF.relu(self.fc1(out))
+        out = AF.relu(self.fc2(out))
+        out = AF.relu(self.fc3(out))
         # Apply dropout for the randomly selected nodes by zeroing out before output during training
         out = AF.dropout(out)
         output = self.out(out)
@@ -319,7 +323,7 @@ if True:
     # print(predicted_digits)
 
 
-if False:
+if True:
     print("............Training CNN................")
     is_MLP = False
     train_loss = train_ANN_model(
