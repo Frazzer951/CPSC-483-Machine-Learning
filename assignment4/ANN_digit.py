@@ -1,4 +1,4 @@
-import time
+from time import time
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -312,9 +312,11 @@ if True:
     ### Train your networks
     print("............Training MLP................")
     is_MLP = True
+    start_time = time()
     train_loss = train_ANN_model(
         num_epochs, train_dataloader, device, CUDA_enabled, is_MLP, MLP_model, loss_func, MLP_optimizer
     )
+    print(f"Training Took {time()-start_time:.2} seconds")
     print("............Testing MLP model................")
     # print("> Input digits:")
     # print(labels)
@@ -326,9 +328,11 @@ if True:
 if True:
     print("............Training CNN................")
     is_MLP = False
+    start_time = time()
     train_loss = train_ANN_model(
         num_epochs, train_dataloader, device, CUDA_enabled, is_MLP, CNN_model, loss_func, CNN_optimizer
     )
+    print(f"Training Took {time()-start_time:.2} seconds")
     print("............Testing CNN model................")
     predicted_digits = test_ANN_model(device, CUDA_enabled, is_MLP, CNN_model, test_dataloader)
     # print("> Predicted digits by CNN model")
